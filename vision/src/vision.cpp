@@ -10,11 +10,7 @@
 #include <stdio.h>
 #include "std_msgs/String.h"
 //#include <AlvarMarkers.h>
-<<<<<<< HEAD
 //#include <tf2_geometry_msgs.h>
-=======
-#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
->>>>>>> upstream/master
 
 static const std::string OPENCV_WINDOW = "Image window";
 
