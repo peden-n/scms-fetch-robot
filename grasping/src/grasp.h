@@ -16,16 +16,39 @@
 
 // TF2
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <geometry_msgs/Point.h>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseArray.h>
+#include <string>
 
 class Grasp
 {
 public:
     static const std::string FRAME_ID;
 
-    void pick(moveit::planning_interface::MoveGroupInterface &move_group, geometry_msgs::Pose pose);
+    Grasp(ros::NodeHandle &nh, std::string move_group);
 
+    void pick(const std::string &name, const geometry_msgs::Pose &object);
+    void place(const std::string &name, const geometry_msgs::Pose &object);
+
+    void setGripperOffset(const geometry_msgs::Point &offset);
+    void setupScene();
+    void moveBottle(geometry_msgs::Pose current, geometry_msgs::Pose target);
+
+private:
     void openGripper(trajectory_msgs::JointTrajectory &posture);
     void closeGripper(trajectory_msgs::JointTrajectory &posture);
+    void addPoints(geometry_msgs::Point &pt1, const geometry_msgs::Point &pt2);
+    void addBottleObject(const std::string &name, const geometry_msgs::Pose &bottle);
+    void removeBottleObject(const std::string &name);
+
+public:
+    ros::NodeHandle nh_;
+    moveit::planning_interface::MoveGroupInterface move_group_;
+    moveit::planning_interface::PlanningSceneInterface planning_scene_;
+
+private:
+    geometry_msgs::Point gripper_offset_;
 };
 
 #endif // GRASP_H
